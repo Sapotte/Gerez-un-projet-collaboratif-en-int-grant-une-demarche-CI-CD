@@ -1,0 +1,8 @@
+name: Bobapp BACK
+run-name: ${{ github.actor }} running bob app back ci 🚀
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: mvn clean install
