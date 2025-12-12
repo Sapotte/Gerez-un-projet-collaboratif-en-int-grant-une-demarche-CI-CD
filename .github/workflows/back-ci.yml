@@ -21,6 +21,13 @@ jobs:
       - name: Test coverage
         run: mvn jacoco:check
 
+      - name: Set up JDK 17 (Sonar scanner requirement)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
       - name: SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
