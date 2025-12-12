@@ -21,19 +21,12 @@ jobs:
       - name: Test coverage
         run: mvn jacoco:check
 
-      - name: Set up JDK 17 (Sonar scanner requirement)
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "17"
-          cache: maven
-
       - name: SonarCloud analysis
         env:
-          SONAR_TOKEN: sapotte
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
           mvn -B sonar:sonar
-          -Dsonar.organization=Sapotte
+          -Dsonar.organization=sapotte
           -Dsonar.projectKey=Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD
           -Dsonar.host.url=https://sonarcloud.io
 
