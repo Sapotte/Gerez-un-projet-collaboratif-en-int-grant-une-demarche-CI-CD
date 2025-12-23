@@ -36,7 +36,7 @@ jobs:
 
       - name: Test coverage front
         working-directory: ./front
-        run: npm run test:coverage
+        run: npm run test
 
   sonar_check:
     runs-on: ubuntu-latest
