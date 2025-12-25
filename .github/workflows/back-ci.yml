@@ -71,15 +71,17 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
-          mvn clean verify
-          mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-          -Dsonar.organization=sapotte
-          -Dsonar.projectKey=Sapotte_CI-CD
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.sources=src/main/java,../front/src
-          -Dsonar.tests=src/test/java,../front/src
-          -Dsonar.test.inclusions=../front/src/**/*.spec.ts
-          -Dsonar.javascript.lcov.reportPaths=../front/coverage/lcov.info
+          mvn -B clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+            -Dsonar.organization=sapotte
+            -Dsonar.projectKey=Sapotte_CI-CD
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.sources=src/main/java,../front/src
+            -Dsonar.tests=src/test/java,../front/src
+            -Dsonar.test.inclusions=../front/src/**/*.spec.ts
+            -Dsonar.javascript.lcov.reportPaths=../front/coverage/lcov.info
+            -Dsonar.java.binaries=target/classes
+            -Dsonar.java.test.binaries=target/test-classes
+            -Dsonar.token="$SONAR_TOKEN"
 
   docker_build_and_push:
     runs-on: ubuntu-latest
