@@ -71,6 +71,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
+          mvn clean verify
           mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
           -Dsonar.organization=sapotte
           -Dsonar.projectKey=Sapotte_CI-CD
