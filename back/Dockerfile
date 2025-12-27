@@ -1,10 +1,13 @@
-FROM maven:3.6.3-jdk-11-slim AS build
-RUN mkdir -p /workspace
+FROM maven:3.9-eclipse-temurin-11 AS build
 WORKDIR /workspace
-COPY pom.xml /workspace
-COPY src /workspace/src
-RUN mvn -B -f pom.xml clean package -DskipTests
-FROM openjdk:11-jdk-slim
-COPY --from=build /workspace/target/*.jar app.jar
+
+COPY pom.xml .
+COPY src ./src
+RUN mvn -B -ntp clean package -DskipTests
+
+FROM amazoncorretto:11
+COPY --from=build --chown=10001:0 /workspace/target/*.jar /app/app.jar
+
+USER 10001
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar","app.jar"]
