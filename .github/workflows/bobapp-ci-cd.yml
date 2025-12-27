@@ -5,9 +5,6 @@ on:
   push:
     branches:
       - "**"
-  pull_request:
-    branches: [ main ]
-    types: [ closed ]
 
 concurrency:
   group: ci-cd-${{ github.ref }}
@@ -83,12 +80,7 @@ jobs:
           -Dsonar.java.test.binaries=target/test-classes
 
   docker_build_and_push:
-    if: >
-      github.event_name == 'pull_request' &&
-      github.event.action == 'closed' &&
-      github.event.pull_request.merged == true &&
-      github.event.pull_request.base.ref == 'main' &&
-      github.event.pull_request.head.ref == 'develop'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME_BACK: ${{secrets.DOCKER_USERNAME}}/bobapp-back

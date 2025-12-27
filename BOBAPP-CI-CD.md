@@ -4,7 +4,7 @@ Lien DockerHub : https://hub.docker.com/repository/docker/salsh90
 
 ## Workflow
 
-Seulement lors de du **push** pour la partie **CI** : intégration avec vérification du build (compilation, vérification des tests et de la couverture) et de la qualité de code avec Sonar ou lors du **merge** de la branch develop vers la main pour la partie **CD** (delivery, avec création des images Docker back et front) 
+Lors de du **push** à partir de n'importe quelle branche pour la partie **CI** : intégration avec vérification du build (compilation, vérification des tests et de la couverture) et de la qualité de code avec Sonar ou lors du **merge** de la branch develop vers la main pour la partie **CD** (delivery, avec création des images Docker back et front). On effectue la partie **CD** (docker) que lorsque le push est effectué sur la branche main.
 Si un pipeline est déjà lancé lors de la création d'une nouvelle, la plus ancienne est annulée afin de gagner du temps.
 
 ### Etape 1 : Vérification du build et vérification de la qualité de code avec Sonar
