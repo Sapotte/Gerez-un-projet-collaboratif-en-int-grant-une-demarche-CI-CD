@@ -3,10 +3,11 @@ run-name: "${{ github.event.head_commit.message || github.event.pull_request.tit
 
 on:
   push:
-    branches: [develop]
+    branches:
+      - "**"
   pull_request:
-    branches: [main, develop]
-    types: [opened, synchronize, reopened, closed]
+    branches: [ main ]
+    types: [ closed ]
 
 concurrency:
   group: ci-cd-${{ github.ref }}
@@ -14,7 +15,6 @@ concurrency:
 
 jobs:
   build_check:
-    if: ${{ !( github.event_name == 'pull_request' && github.event.action == 'closed' ) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
