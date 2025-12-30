@@ -25,7 +25,6 @@ On publie la version se trouvant sur main après le merge → permet de publier 
 Permet de créer des images Docker pour le back et le front, ce qui facilite le déploiement.
 On ne build qu'une seule fois et on peut les lancer n'importe où ("Build once, run anywhere")
 
-
 ## KPIs proposés
  * Couverture des tests > 70% back et front : vérifie le bon fonctionnement du code et empêche les régressions sur le nouveau code (actuellement trop basse, augmenter la couverture minimale de test à chaque nouvelle feature afin d'éviter les régressions sur la couverture)
  * Qualité de code sur le nouveau code :
