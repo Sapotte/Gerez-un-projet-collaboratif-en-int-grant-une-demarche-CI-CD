@@ -85,7 +85,7 @@ jobs:
           -Dsonar.java.test.binaries=target/test-classes
 
       - name: SonarCloud Quality Gate check
-        uses: sonarsource/sonarcloud-quality-gate-action
+        uses: sonarsource/sonarcloud-quality-gate-action@v1
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
