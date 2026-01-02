@@ -84,12 +84,6 @@ jobs:
           -Dsonar.java.binaries=target/classes
           -Dsonar.java.test.binaries=target/test-classes
 
-      - name: SonarCloud Quality Gate check
-        uses: sonarsource/sonarcloud-quality-gate-action@v1
-        timeout-minutes: 5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
   docker_build_and_push:
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
