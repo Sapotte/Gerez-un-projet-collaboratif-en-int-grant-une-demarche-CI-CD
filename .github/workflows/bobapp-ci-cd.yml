@@ -11,6 +11,11 @@ on:
       - "main"
     types: [opened, closed]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 concurrency:
   group: ci-cd-${{ github.ref }}
   cancel-in-progress: true
@@ -40,6 +45,7 @@ jobs:
         working-directory: ./back
         run: |
           mvn -B -ntp verify
+          mvn -B -ntp jacoco:report
           mvn -B -ntp jacoco:check
 
       - name: Build and test front
@@ -48,17 +54,6 @@ jobs:
           npm ci
           npm run build
           npm run test:ci
-
-      - name: Upload coverage reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-reports
-          path: |
-            back/target/site/jacoco/**
-            front/coverage/**
-          if-no-files-found: warn
-          retention-days: 14
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -72,6 +67,63 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish_reports:
+    needs: build_check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: |
+            back/target/site/jacoco/**
+            front/coverage/**
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-reports
+          path: site
+
+      - name: Create landing page
+        run: |
+          <!doctype html>
+          <html lang="fr">
+            <head>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <title>Bobapp - Rapports CI</title>
+            </head>
+            <body>
+              <h1>Bobapp - Rapports CI</h1>
+              <div>
+                <p>Rapports générés par GitHub Actions.</p>
+                <ul>
+                  <li><a href="./back/target/site/jacoco/index.html">Couverture Back (JaCoCo)</a></li>
+                  <li><a href="./front/coverage/index.html">Couverture Front</a></li>
+                </ul>
+                <p><small>Commit: <code>${GITHUB_SHA}</code></small></p>
+              </div>
+            </body>
+          </html>
+          HTML
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
 
   docker_build_and_push:
