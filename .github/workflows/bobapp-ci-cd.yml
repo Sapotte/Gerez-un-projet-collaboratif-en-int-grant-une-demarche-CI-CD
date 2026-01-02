@@ -4,10 +4,12 @@ run-name: "${{ github.event.head_commit.message || github.event.pull_request.tit
 on:
   push:
     branches:
-      - "develop, feature/**"
+      - "develop"
+      - "feature/**"
   pull_request:
     branches:
       - "main"
+    types: [opened, synchronize, reopened, closed]
 
 concurrency:
   group: ci-cd-${{ github.ref }}
@@ -83,7 +85,7 @@ jobs:
           -Dsonar.java.test.binaries=target/test-classes
 
   docker_build_and_push:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     needs: build_check
     env:
