@@ -110,9 +110,8 @@ jobs:
                 <p>Rapports générés par GitHub Actions.</p>
                 <ul>
                   <li><a href="./back/target/site/jacoco/index.html">Couverture Back (JaCoCo)</a></li>
-                  <li><a href="./front/coverage/index.html">Couverture Front</a></li>
+                  <li><a href="./front/coverage/bobapp/app/index.html">Couverture Front</a></li>
                 </ul>
-                <p><small>Commit: <code>${GITHUB_SHA}</code></small></p>
               </div>
             </body>
           </html>
