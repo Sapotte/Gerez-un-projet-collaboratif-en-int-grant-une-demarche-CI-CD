@@ -68,21 +68,11 @@ jobs:
           cache: maven
 
       - name: SonarCloud analysis
-        working-directory: ./back
+        uses: sonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: >
-          mvn -B -ntp org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-          -Dsonar.organization=sapotte
-          -Dsonar.projectKey=Sapotte_CI-CD
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.sources=src/main/java,../front/src
-          -Dsonar.tests=src/test/java,../front/src
-          -Dsonar.test.inclusions=../front/src/**/*.spec.ts
-          -Dsonar.javascript.lcov.reportPaths=../front/coverage/lcov.info
-          -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-          -Dsonar.java.binaries=target/classes
-          -Dsonar.java.test.binaries=target/test-classes
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
   docker_build_and_push:
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
