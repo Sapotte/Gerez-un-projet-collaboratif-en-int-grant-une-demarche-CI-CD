@@ -96,6 +96,7 @@ jobs:
 
       - name: Create landing page
         run: |
+          cat > site/index.html <<'HTML'
           <!doctype html>
           <html lang="fr">
             <head>
